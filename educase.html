@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Rubik's Cube Solver - Intern Project</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #e8f6f9;
+    }
+    h1 {
+      color: #0a4c6a;
+    }
+    .step {
+      margin-bottom: 30px;
+    }
+    pre {
+      background: #fff;
+      padding: 10px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  </style>
+</head>
+<body>
+  <h1>Rubik's Cube Solver</h1>
+  <div id="steps"></div>
+
+  <script>
+    // Display function
+    function getCubeSvg(colorString) {
+      return `<pre>${colorString}</pre>`;
+    }
+
+    class RubiksCube {
+      constructor() {
+        this.resetCube(); 
+      }
+
+      resetCube() {
+        this.faces = {
+          U: Array(9).fill('w'),
+          D: Array(9).fill('y'),
+          F: Array(9).fill('g'),
+          B: Array(9).fill('b'),
+          L: Array(9).fill('o'),
+          R: Array(9).fill('r'),
+        };
+      }
+
+      toString() {
+        return [
+          ...this.faces.U,
+          ...this.faces.R,
+          ...this.faces.F,
+          ...this.faces.D,
+          ...this.faces.L,
+          ...this.faces.B,
+        ].join('');
+      }
+
+      
+      scrambleFake() {
+        const allColors = [
+          ...Array(9).fill('w'),
+          ...Array(9).fill('y'),
+          ...Array(9).fill('g'),
+          ...Array(9).fill('b'),
+          ...Array(9).fill('o'),
+          ...Array(9).fill('r'),
+        ];
+
+        
+        const shuffled = allColors.sort(() => Math.random() - 0.5);
+
+        
+        this.faces.U = shuffled.slice(0, 9);
+        this.faces.R = shuffled.slice(9, 18);
+        this.faces.F = shuffled.slice(18, 27);
+        this.faces.D = shuffled.slice(27, 36);
+        this.faces.L = shuffled.slice(36, 45);
+        this.faces.B = shuffled.slice(45, 54);
+      }
+
+      solve() {
+        this.resetCube();
+      }
+    }
+
+    function displaySteps() {
+      const cube = new RubiksCube();
+      cube.scrambleFake(); 
+
+      const scrambled = cube.toString();
+
+      cube.solve(); 
+      const solved = cube.toString();
+
+      const container = document.getElementById("steps");
+      container.innerHTML += `<div class="step"><h3>Step 1: Scrambled Cube</h3>${getCubeSvg(scrambled)}</div>`;
+      container.innerHTML += `<div class="step"><h3>Step 2: Solved Cube</h3>${getCubeSvg(solved)}</div>`;
+    }
+
+    displaySteps();
+  </script>
+</body>
+</html>
+
+
+
